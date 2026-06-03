@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: estacionamiento_db
+    environment:
+      POSTGRES_DB: estacionamiento
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - estacionamiento_pgdata:/var/lib/postgresql/data
+
+volumes:
+  estacionamiento_pgdata:

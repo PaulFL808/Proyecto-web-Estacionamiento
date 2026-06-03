@@ -1,0 +1,22 @@
+{
+  "name": "proyecto-web-estacionamiento",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proyecto final web: control de estacionamiento.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev:api": "npm --workspace server run dev",
+    "dev:client": "npm --workspace client run dev",
+    "start:api": "npm --workspace server run start",
+    "build:client": "npm --workspace client run build",
+    "db:migrate": "npm --workspace server run db:migrate",
+    "db:migrate:undo": "npm --workspace server run db:migrate:undo",
+    "check": "npm --workspace server run check && npm --workspace client run build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
