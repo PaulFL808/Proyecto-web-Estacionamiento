@@ -38,8 +38,10 @@ module.exports = {
     });
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("users");
-    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_users_role";');
+    if (queryInterface.sequelize.getDialect() === "postgres") {
+      await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_users_role";');
+    }
   }
 };

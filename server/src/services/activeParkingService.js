@@ -15,8 +15,11 @@ async function listActiveParkings() {
   });
 }
 
-async function createActiveParking(payload) {
-  return ActiveParking.create(payload);
+async function createActiveParking(payload, user) {
+  return ActiveParking.create({
+    ...payload,
+    createdBy: user?.id || payload.createdBy
+  });
 }
 
 module.exports = {

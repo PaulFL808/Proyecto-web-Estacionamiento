@@ -1,18 +1,8 @@
 require("dotenv").config({ path: "../.env" });
 
 const common = {
-  dialect: "postgres",
+  dialect: "mysql",
   logging: false
-};
-
-const production = {
-  ...common,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  }
 };
 
 module.exports = {
@@ -25,7 +15,7 @@ module.exports = {
     use_env_variable: "DATABASE_URL"
   },
   production: {
-    ...production,
+    ...common,
     use_env_variable: "DATABASE_URL"
   }
 };

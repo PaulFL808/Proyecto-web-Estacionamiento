@@ -54,9 +54,11 @@ module.exports = {
     });
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("parking_spots");
-    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_parking_spots_type";');
-    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_parking_spots_status";');
+    if (queryInterface.sequelize.getDialect() === "postgres") {
+      await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_parking_spots_type";');
+      await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_parking_spots_status";');
+    }
   }
 };

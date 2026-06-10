@@ -24,11 +24,31 @@ app.use((_req, res) => {
 });
 
 app.use((error, _req, res, _next) => {
-  const status = error.status || 500;
+  let status = error.status || 500;
+  let message = error.message || "Error interno del servidor";
+  let details = error.details;
+
+  if (error.name === "SequelizeValidationError") {
+    status = 400;
+    message = "Datos invalidos.";
+    details = error.errors.map((item) => item.message);
+  }
+
+  if (error.name === "SequelizeUniqueConstraintError") {
+    status = 409;
+    message = "Ya existe un registro con esos datos.";
+    details = error.errors.map((item) => item.message);
+  }
+
+  if (error.name === "SequelizeForeignKeyConstraintError") {
+    status = 409;
+    message = "No se puede completar la operacion por registros relacionados.";
+  }
 
   res.status(status).json({
     error: true,
-    message: error.message || "Error interno del servidor"
+    message,
+    details
   });
 });
 

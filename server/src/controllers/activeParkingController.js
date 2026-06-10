@@ -11,7 +11,7 @@ async function index(_req, res, next) {
 
 async function store(req, res, next) {
   try {
-    const data = await activeParkingService.createActiveParking(req.body);
+    const data = await activeParkingService.createActiveParking(req.body, req.user);
     res.status(201).json({ data });
   } catch (error) {
     next(error);

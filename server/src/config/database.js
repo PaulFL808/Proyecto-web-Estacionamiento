@@ -6,17 +6,8 @@ if (!env.databaseUrl) {
 }
 
 const sequelize = new Sequelize(env.databaseUrl, {
-  dialect: "postgres",
-  logging: env.nodeEnv === "development" ? false : false,
-  dialectOptions:
-    env.nodeEnv === "production"
-      ? {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false
-          }
-        }
-      : {}
+  dialect: "mysql",
+  logging: env.nodeEnv === "development" ? false : false
 });
 
 module.exports = sequelize;

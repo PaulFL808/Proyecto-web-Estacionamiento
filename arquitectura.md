@@ -6,7 +6,7 @@ El entregable es un **sistema web** desplegado y usable en producción:
 
 - El usuario opera desde el **navegador** (frontend).
 - La **API REST** persiste datos y aplica reglas de negocio.
-- **PostgreSQL** almacena el estado (recomendado; MySQL permitido si se documenta).
+- **MySQL** almacena el estado local del proyecto.
 - En el **hito 3** la demo se realiza contra URLs públicas, no solo `localhost`.
 
 Postman valida la API; la nota final pondera la **experiencia web integrada**.
@@ -22,7 +22,7 @@ flowchart LR
     Svc[Servicios]
     Seq[Sequelize_Models]
   end
-  DB[(PostgreSQL)]
+  DB[(MySQL)]
   Host[Railway_Vercel_Netlify]
   UI -->|HTTPS_JSON_JWT| Routes
   Routes --> Ctrl --> Svc --> Seq --> DB
@@ -142,7 +142,7 @@ El alumno elige e documenta:
 
 | Variable | Servicio | Descripción |
 |----------|----------|-------------|
-| `DATABASE_URL` | API (Railway) | Connection string PostgreSQL (SSL en producción) |
+| `DATABASE_URL` | API | Connection string MySQL |
 | `JWT_SECRET` | API | Clave larga y aleatoria para firmar tokens |
 | `PORT` | API | Puerto del proceso (Railway suele inyectarlo) |
 | `NODE_ENV` | API | `development` / `production` |
@@ -153,7 +153,9 @@ El alumno elige e documenta:
 
 ```env
 # === Backend (local) ===
-DATABASE_URL=postgresql://usuario:password@localhost:5432/proyecto_final
+DATABASE_URL=mysql://root:TU_PASSWORD@localhost:3306/estacionamiento
+MYSQL_DATABASE=estacionamiento
+MYSQL_ROOT_PASSWORD=TU_PASSWORD
 JWT_SECRET=cambiar_por_secreto_largo_aleatorio
 PORT=3000
 NODE_ENV=development
@@ -172,12 +174,12 @@ En producción, las mismas claves se configuran en cada hosting con valores real
 | Componente | Plataforma | Obligatorio |
 |------------|------------|-------------|
 | API Node + Express | **Railway** | Sí |
-| PostgreSQL | **Railway** (plugin) | Sí |
+| MySQL | Servicio compatible con MySQL | Sí |
 | Frontend | **Railway**, **Vercel** o **Netlify** | Sí (elección del alumno) |
 
 Pasos generales:
 
-1. Crear proyecto en Railway; añadir servicio PostgreSQL; copiar `DATABASE_URL`.
+1. Crear o configurar un servicio MySQL; copiar `DATABASE_URL`.
 2. Desplegar API; configurar variables; ejecutar migraciones en deploy o manualmente documentado.
 3. Configurar `CORS_ORIGIN` con la URL final del front.
 4. Desplegar `client/` en la plataforma elegida con la variable de API pública.
