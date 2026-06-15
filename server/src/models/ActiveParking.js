@@ -53,6 +53,27 @@ module.exports = (sequelize) => {
         allowNull: true,
         field: "expected_exit_at"
       },
+      checkOutAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        field: "check_out_at"
+      },
+      durationMinutes: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "duration_minutes",
+        validate: {
+          min: 0
+        }
+      },
+      totalAmount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+        field: "total_amount",
+        validate: {
+          min: 0
+        }
+      },
       status: {
         type: DataTypes.ENUM("active", "finished", "cancelled"),
         allowNull: false,

@@ -6,6 +6,11 @@ class User extends Model {
       foreignKey: "createdBy",
       as: "createdParkings"
     });
+
+    User.hasMany(models.PasswordResetToken, {
+      foreignKey: "userId",
+      as: "passwordResetTokens"
+    });
   }
 }
 

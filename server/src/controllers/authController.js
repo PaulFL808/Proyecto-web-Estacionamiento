@@ -18,7 +18,27 @@ async function login(req, res, next) {
   }
 }
 
+async function requestPasswordReset(req, res, next) {
+  try {
+    const data = await authService.requestPasswordReset(req.body);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function resetPassword(req, res, next) {
+  try {
+    const data = await authService.resetPassword(req.body);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   register,
-  login
+  login,
+  requestPasswordReset,
+  resetPassword
 };

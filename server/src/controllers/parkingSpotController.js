@@ -1,8 +1,8 @@
 const parkingSpotService = require("../services/parkingSpotService");
 
-async function index(_req, res, next) {
+async function index(req, res, next) {
   try {
-    const data = await parkingSpotService.listParkingSpots();
+    const data = await parkingSpotService.listParkingSpots(req.query);
     res.json({ data });
   } catch (error) {
     next(error);

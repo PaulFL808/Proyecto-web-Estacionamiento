@@ -29,7 +29,7 @@ app.use((error, _req, res, _next) => {
   let details = error.details;
 
   if (error.name === "SequelizeValidationError") {
-    status = 400;
+    status = 422;
     message = "Datos invalidos.";
     details = error.errors.map((item) => item.message);
   }
@@ -43,6 +43,10 @@ app.use((error, _req, res, _next) => {
   if (error.name === "SequelizeForeignKeyConstraintError") {
     status = 409;
     message = "No se puede completar la operacion por registros relacionados.";
+  }
+
+  if (status === 500 && process.env.NODE_ENV !== "production") {
+    console.error(error);
   }
 
   res.status(status).json({
