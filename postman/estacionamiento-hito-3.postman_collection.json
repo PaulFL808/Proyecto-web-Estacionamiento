@@ -1,0 +1,316 @@
+{
+  "info": {
+    "name": "Control de estacionamiento - Hito 3",
+    "description": "Coleccion para validar auth, recuperacion de contrasena, CRUD de plazas, entradas/salidas, reportes y errores 401/409/422.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": "postman{{$timestamp}}@demo.cl"
+    },
+    {
+      "key": "password",
+      "value": "Clave1234"
+    },
+    {
+      "key": "newPassword",
+      "value": "NuevaClave123"
+    },
+    {
+      "key": "resetToken",
+      "value": ""
+    },
+    {
+      "key": "parkingSpotId",
+      "value": ""
+    },
+    {
+      "key": "activeParkingId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health",
+        "description": "Verifica que la API este levantada."
+      }
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Registro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('registro 201', () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('token', json.data.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuario Postman\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register",
+            "description": "Crea usuario con password hasheada."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('login 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('token', json.data.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login",
+            "description": "Obtiene JWT."
+          }
+        },
+        {
+          "name": "Solicitar recuperacion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('recuperacion 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('resetToken', json.data.resetToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/password-reset/request",
+            "description": "Genera token de desarrollo con expiracion."
+          }
+        },
+        {
+          "name": "Confirmar nueva contrasena",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"password\": \"{{newPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/password-reset/confirm",
+            "description": "Actualiza contrasena usando token valido."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Plazas",
+      "item": [
+        {
+          "name": "Crear plaza",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('plaza 201', () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('parkingSpotId', json.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"PM-{{$timestamp}}\",\n  \"floor\": 1,\n  \"sector\": \"postman\",\n  \"type\": \"standard\",\n  \"status\": \"available\",\n  \"hourlyRate\": 2000,\n  \"notes\": \"Creada desde Postman\"\n}"
+            },
+            "url": "{{baseUrl}}/plazas",
+            "description": "Crea recurso principal."
+          }
+        },
+        {
+          "name": "Listar plazas con filtros",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/plazas?sector=postman",
+            "description": "Consulta con filtros."
+          }
+        },
+        {
+          "name": "Actualizar plaza",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hourlyRate\": 2500,\n  \"notes\": \"Tarifa actualizada\"\n}"
+            },
+            "url": "{{baseUrl}}/plazas/{{parkingSpotId}}",
+            "description": "Edita recurso principal."
+          }
+        },
+        {
+          "name": "Error 422 plaza invalida",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"\",\n  \"floor\": 0,\n  \"sector\": \"\",\n  \"hourlyRate\": -1\n}"
+            },
+            "url": "{{baseUrl}}/plazas",
+            "description": "Debe responder 400/422 por datos invalidos."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Entradas y salidas",
+      "item": [
+        {
+          "name": "Registrar entrada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('entrada 201', () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('activeParkingId', json.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parkingSpotId\": \"{{parkingSpotId}}\",\n  \"plate\": \"PM{{$timestamp}}\",\n  \"driverName\": \"Conductor Postman\",\n  \"vehicleType\": \"car\"\n}"
+            },
+            "url": "{{baseUrl}}/estacionamientos-activos",
+            "description": "Registra entrada con patente."
+          }
+        },
+        {
+          "name": "Error 409 plaza ocupada",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parkingSpotId\": \"{{parkingSpotId}}\",\n  \"plate\": \"DUP{{$timestamp}}\",\n  \"vehicleType\": \"car\"\n}"
+            },
+            "url": "{{baseUrl}}/estacionamientos-activos",
+            "description": "Debe responder 409 porque la plaza ya tiene un vehiculo activo."
+          }
+        },
+        {
+          "name": "Registrar salida",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PATCH",
+            "url": "{{baseUrl}}/estacionamientos-activos/{{activeParkingId}}/salida",
+            "description": "Cierra estacionamiento y calcula tarifa."
+          }
+        },
+        {
+          "name": "Listar historial",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/estacionamientos-activos?status=all",
+            "description": "Lista registros activos, finalizados y cancelados."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "item": [
+        {
+          "name": "Ocupacion por zona",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/reportes/ocupacion-zona",
+            "description": "Reporte avanzado rq-10."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Errores",
+      "item": [
+        {
+          "name": "Error 401 sin token",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/plazas",
+            "description": "Debe responder 401 porque falta Authorization."
+          }
+        },
+        {
+          "name": "Error 404 recurso inexistente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/plazas/00000000-0000-0000-0000-000000000000",
+            "description": "Debe responder 404."
+          }
+        }
+      ]
+    }
+  ]
+}
