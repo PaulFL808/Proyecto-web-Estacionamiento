@@ -94,6 +94,10 @@ h1 {
   word-break: break-word;
 }
 
+.title-estacionamiento {
+  font-size: 75%;
+}
+
 h2 {
   margin-bottom: 14px;
   color: #111814;

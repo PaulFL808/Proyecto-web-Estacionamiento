@@ -424,7 +424,7 @@ function App() {
           <div className="auth-copy">
             <CircleParking aria-hidden="true" />
             <span className="eyebrow">Hito 3</span>
-            <h1>Control de estacionamiento</h1>
+            <h1>Control de <span className="title-estacionamiento">estacionamiento</span></h1>
             <p>Aplicacion completa con auth JWT, plazas, entradas, salidas, tarifas y reportes por zona.</p>
           </div>
 
@@ -527,7 +527,7 @@ function App() {
       <header className="topbar">
         <div>
           <span className="eyebrow">Hito 3</span>
-          <h1>Control de estacionamiento</h1>
+          <h1>Control de <span className="title-estacionamiento">estacionamiento</span></h1>
         </div>
         <div className="session-pill">
           <span>{session.user.name}</span>
