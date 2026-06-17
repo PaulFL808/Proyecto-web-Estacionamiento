@@ -12,3 +12,6 @@ Thumbs.db
 .vscode/
 .idea/
 .codex-run/
+
+# Local Netlify folder
+.netlify

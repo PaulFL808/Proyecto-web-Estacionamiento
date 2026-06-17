@@ -64,6 +64,8 @@ const vehicleTypes = {
   truck: "Camioneta"
 };
 
+const predefinedSectors = ["Norte", "Sur", "Oriente", "Poniente", "VIP", "Subterraneo 1", "Subterraneo 2"];
+
 function getStoredSession() {
   try {
     return JSON.parse(localStorage.getItem(sessionKey));
@@ -563,7 +565,12 @@ function App() {
         </label>
         <label>
           Sector
-          <input name="sector" value={filters.sector} onChange={handleInput(setFilters)} placeholder="general" />
+          <select name="sector" value={filters.sector} onChange={handleInput(setFilters)}>
+            <option value="">Todos los sectores</option>
+            {predefinedSectors.map((s) => (
+              <option key={s} value={s.toLowerCase()}>{s}</option>
+            ))}
+          </select>
         </label>
         <label>
           Estado plaza
@@ -697,7 +704,12 @@ function SpotForm({ editingSpotId, form, onChange, onCancel, onSubmit, loading }
       </div>
       <label>
         Sector
-        <input name="sector" value={form.sector} onChange={onChange} required maxLength={60} />
+        <select name="sector" value={form.sector} onChange={onChange} required>
+          <option value="">Seleccionar sector</option>
+          {predefinedSectors.map((s) => (
+            <option key={s} value={s.toLowerCase()}>{s}</option>
+          ))}
+        </select>
       </label>
       <div className="form-row">
         <label>
