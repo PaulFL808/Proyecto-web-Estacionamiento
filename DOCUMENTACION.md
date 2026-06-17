@@ -1,9 +1,9 @@
 # Proyecto: Control de Estacionamiento
 
-## 🎯 Finalidad del Proyecto
+## Finalidad del Proyecto
 El sistema "Control de Estacionamiento" es una aplicación web integral diseñada para administrar de manera eficiente las operaciones diarias de un recinto de estacionamientos. Su principal objetivo es reemplazar procesos manuales (como el uso de libretas o planillas de cálculo) por una plataforma centralizada que permita hacer seguimiento en tiempo real de la disponibilidad de las plazas, registrar la entrada y salida de vehículos, y calcular automáticamente las tarifas a cobrar.
 
-## ⚙️ Funcionalidades Principales
+##Funcionalidades Principales
 
 ### 1. Autenticación y Seguridad
 - **Registro y Login:** El sistema requiere que los operadores se registren e inicien sesión de forma segura utilizando JSON Web Tokens (JWT).
@@ -24,7 +24,7 @@ El sistema "Control de Estacionamiento" es una aplicación web integral diseñad
 - **Estadísticas en Tiempo Real:** El panel principal (Dashboard) muestra métricas clave como el total de plazas, cuántas están disponibles, cuántas ocupadas, la cantidad de vehículos activos y los ingresos totales recaudados.
 - **Ocupación por Zona:** Gráficos de barras horizontales que indican de un simple vistazo qué tan lleno está cada sector del estacionamiento (ej. Norte al 80%, VIP al 20%).
 
-## 💻 Arquitectura y Tecnologías
+## Arquitectura y Tecnologías
 La aplicación está construida sobre una arquitectura moderna basada en el "Stack PERN/MERN":
 - **Frontend (Cliente):** Desarrollado con **React** y **Vite**, utilizando CSS puro (Responsive Design) para las interfaces y *Lucide React* para la iconografía gráfica. Está alojado en **Netlify**.
 - **Backend (Servidor):** API RESTful desarrollada con **Node.js** y **Express.js**, encargada de procesar las reglas de negocio, validaciones y la autenticación. Alojado en **Railway**.
