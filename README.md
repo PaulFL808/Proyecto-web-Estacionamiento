@@ -218,10 +218,10 @@ npm run start:api
 
 URLs de produccion:
 
-- API: pendiente de configurar en Railway.
-- Front: pendiente de configurar en Vercel/Netlify/Railway.
+- API: Desplegada en Railway (URL privada configurada en frontend).
+- Front: [https://estacionamiento-paul-ferrada.netlify.app](https://estacionamiento-paul-ferrada.netlify.app)
 
-Estas URLs requieren acceso a las cuentas de hosting del alumno para completar GEN-13 en ambiente publico.
+El requisito GEN-13 se encuentra completado al 100% en ambiente publico.
 
 ## Evolucion de esquema
 
