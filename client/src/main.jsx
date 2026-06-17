@@ -699,7 +699,7 @@ function SpotForm({ editingSpotId, form, onChange, onCancel, onSubmit, loading }
         </label>
         <label>
           Tarifa hora
-          <input name="hourlyRate" type="number" min="1" step="100" value={form.hourlyRate} onChange={onChange} />
+          <input name="hourlyRate" type="number" min="100" step="100" value={form.hourlyRate} onChange={onChange} />
         </label>
       </div>
       <label>
